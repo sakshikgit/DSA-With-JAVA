@@ -214,6 +214,9 @@ public class Sorting{
         System.out.println();
 
 
+        mergeSort(arr, 0, arr.length-1);
+
+
 
 
         System.out.println("After sorting");
