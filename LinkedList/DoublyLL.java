@@ -1,23 +1,23 @@
 package LinkedList;
 
-public class LinkList {
-    public static void main(String[] args){
-        LinkList obj = new LinkList();
+public class DoublyLL {
+    public static void main(String[] args) {
+        DoublyLL obj = new DoublyLL();
         obj.insertTail(10);
         obj.printList();
-        obj.deletetTail();
-        obj.printList();
-        obj.updateNode(3, 40);
-        obj.printList();
+        // obj.deletetTail();
+        // obj.printList();
+        // obj.updateNode(3, 40);
+        // obj.printList();
     }
 
-
-
-    Node<Integer> head;
+    DoublyNode<Integer> head;
+    DoublyNode<Integer> tail;
     int size;
 
-    LinkList() {
+    DoublyLL() {
         this.head = null;
+        this.tail = null;
         this.size = 0;
     }
 
@@ -35,31 +35,36 @@ public class LinkList {
 
         } else {
             int counter = 1;
-            Node<Integer> newNode = new Node<>(data);
-            Node<Integer> temp = head;
+            DoublyNode<Integer> newNode = new DoublyNode<>(data);
+            DoublyNode<Integer> temp = head;
             while (counter < position - 1 && temp != null) {
                 counter++;
                 temp = temp.next;
             }
-            newNode.next = temp.next;
+            DoublyNode<Integer> currentNode = temp.next;
+            newNode.next = currentNode;
+            currentNode.prev = newNode;
             temp.next = newNode;
+            newNode.prev = temp;
+
             size++;
+
         }
         System.out.println("insertion is sucessful at position");
     }
 
-
-
     // insertion at head
     public void insertHead(int data) {
-        Node<Integer> newNode = new Node<>(data);
+        DoublyNode<Integer> newNode = new DoublyNode<>(data);
         if (head == null) {
             head = newNode;
+            tail = newNode;
             System.out.println("insertion at head is successful");
             size++;
             return;
         }
         newNode.next = head;
+        head.prev = newNode;
         head = newNode;
         System.out.println("insertion at head is successful");
         size++;
@@ -67,71 +72,89 @@ public class LinkList {
 
     // insertion at tail
     public void insertTail(int data) {
-        Node<Integer> newNode = new Node<>(data);
+        DoublyNode<Integer> newNode = new DoublyNode<>(data);
         if (head == null) {
             head = newNode;
+            tail = newNode;
             System.out.println("insertion at tail is successful");
             size++;
             return;
         }
-        Node<Integer> temp = head;
+        DoublyNode<Integer> temp = head;
         while (temp.next != null) {
             temp = temp.next;
         }
         temp.next = newNode;
+        newNode.prev = temp;
+        tail = newNode;
         System.out.println("insertion at tail is successful");
         size++;
     }
 
-    public void printList(){
-        Node<Integer> temp = head;
-        while(temp!=null){
+    public void printList() {
+        DoublyNode<Integer> temp = head;
+        while (temp != null) {
             System.out.println("data is ->" + temp.data);
             temp = temp.next;
         }
     }
 
-    public void deleteHead(){
-        if(head==null){
+    public void printListReverse() {
+        DoublyNode<Integer> temp = tail;
+        while (temp != null) {
+            System.out.println("data is ->" + temp.data);
+            temp = temp.prev;
+        }
+    }
+
+    public void deleteHead() {
+        if (head == null) {
             System.out.println("linked list is empty");
             return;
         }
-        Node<Integer> temp = head;
+        DoublyNode<Integer> temp = head;
         head = head.next;
         temp.next = null;
+        if (head == null) {
+            tail = null;
+        } else {
+            head.prev = null;
+        }
+
         System.out.println("deletion at head is successful");
         size--;
     }
 
-     public void deletetTail() {
-        
+    public void deletetTail() {
+
         if (head == null) {
-           
+
             System.out.println("linked list is empty");
-           
+
             return;
         }
-        if(head.next==null){
+        if (head.next == null) {
             head = null;
+            tail = null;
             size--;
             System.out.println("deletion at head is successful");
             return;
         }
-        Node<Integer> temp = head;
-        Node<Integer> prev = null;0.
-        
+        DoublyNode<Integer> temp = head;
+        DoublyNode<Integer> prevNode = null;
         while (temp.next != null) {
-            prev = temp;
+            prevNode = temp;
             temp = temp.next;
         }
-        prev.next = null;
+        prevNode.next = null;
+        temp.prev = null;
+        tail = prevNode;
         System.out.println("deletion at tail is successful");
         size--;
     }
 
-    
     public void deletetNode(int position) {
-        if (position > size  || position <= 0) {
+        if (position > size || position <= 0) {
             System.out.println("wrong input");
             return;
         }
@@ -144,63 +167,61 @@ public class LinkList {
 
         } else {
             int counter = 1;
-            Node<Integer> prev = null;
-            Node<Integer> temp = head;
+            DoublyNode<Integer> prevNode = null;
+            DoublyNode<Integer> temp = head;
             while (counter < position - 1 && temp != null) {
                 counter++;
-                prev = temp;
+                prevNode = temp;
                 temp = temp.next;
             }
-            prev.next = temp.next;
+            DoublyNode<Integer> nextNode = temp.next;
+            prevNode.next = nextNode;
+            nextNode.prev = prevNode;
+            temp.prev = null;
             temp.next = null;
             size--;
             System.out.println("deletion is sucessful at position" + position);
         }
-        
+
     }
 
-    public void updateNode(int position, int updateValue){
-        if(head==null){
+    public void updateNode(int position, int updateValue) {
+        if (head == null) {
             System.out.println("Linked list is empty");
             return;
         }
         int counter = 1;
-        Node<Integer> temp = head;
-        while(counter<position && temp!=null){
+        DoublyNode<Integer> temp = head;
+        while (counter < position && temp != null) {
             counter++;
             temp = temp.next;
 
         }
-        if(temp != null && counter==position){
+        if (temp != null && counter == position) {
             temp.data = updateValue;
-        } else{
+        } else {
             System.out.println("size of linked list is smaller than position" + position);
             return;
         }
         System.out.println("Update at position " + position + "was successful");
     }
 
-
-
-
-    
-
-
 }
 
-
-
-class Node<T> {
+class DoublyNode<T> {
     T data;
-    Node<T> next;
+    DoublyNode<T> next;
+    DoublyNode<T> prev;
 
-    Node() {
+    DoublyNode() {
         this.next = null;
+        this.prev = null;
     }
 
-    Node(T data) {
+    DoublyNode(T data) {
         this.next = null;
         this.data = data;
+        this.prev = null;
 
     }
 
