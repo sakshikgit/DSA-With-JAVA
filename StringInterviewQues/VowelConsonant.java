@@ -2,7 +2,7 @@ package StringInterviewQues;
 
 public class VowelConsonant {
     public static void main(String[] args){
-        String s = "Hello World";
+        String s = "AaMjo OEiou";
         s = s.toLowerCase();
 
         int v  = 0;
